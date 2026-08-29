@@ -1,0 +1,37 @@
+{
+  "dayOfWeek": [
+    "الجمعة",
+    "السبت",
+    "الأحد",
+    "الاثنين",
+    "الثلاثاء"
+  ],
+  "calendarDayTemperatureMax": [
+    45,
+    44,
+    44,
+    44,
+    44
+  ],
+  "calendarDayTemperatureMin": [
+    33,
+    33,
+    31,
+    30,
+    30
+  ],
+  "iconCode": [
+    32,
+    32,
+    32,
+    32,
+    32
+  ],
+  "precipChance": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}
