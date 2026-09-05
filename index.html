@@ -1,45 +1,144 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محطة أبيار الماشي</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>راصد | أبيار الماشي · المدينة</title>
+  <meta name="description" content="لوحة راصد لبيانات الطقس في أبيار الماشي · المدينة">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=static-0.1.0">
 </head>
-
 <body>
-
-<header class="header">
-    <div>
-        <h1>محطة أبيار الماشي</h1>
-        <div id="station-status">جاري الاتصال...</div>
+  <header class="site-header">
+    <div class="header-side header-time">
+      <div id="gregorianDate" class="header-date">--</div>
+      <div id="hijriDate" class="header-date">--</div>
+      <div id="liveTime" class="live-time">--:--:--</div>
     </div>
 
-    <div class="date">
-        <div id="day"></div>
-        <div id="date"></div>
+    <div class="header-symbol-wrap">
+      <img id="headerSymbol" class="header-symbol" src="./header-symbol-light.webp" data-light-src="./header-symbol-light.webp" data-dark-src="./header-symbol-dark.webp" alt="راصد - منظر جبلي رمزي">
     </div>
-</header>
 
-<main>
+    <div class="header-side header-station">
+      <div class="brand-row">
+        <div class="brand">راصد</div>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="تبديل الوضع" title="تبديل الوضع">☀️</button>
+      </div>
+      <div class="station-state">
+        <span>حالة المحطة</span>
+        <span class="status-bracket">(</span>
+        <span id="statusText">جاري الاتصال...</span>
+        <span class="status-bracket">)</span>
+        <span id="statusLamp" class="status-lamp pending"></span>
+      </div>
+      <div id="lastReading" class="last-reading">آخر قراءة: --</div>
+    </div>
+  </header>
 
-    <section>
-        <h2>البيانات المباشرة</h2>
-        <div id="current-data" class="data-grid">
-            جاري تحميل البيانات...
+  <main class="container">
+    <section class="station-block">
+      <div class="station-heading">
+        <h1>أبيار الماشي · المدينة</h1>
+        <div class="source-note">بيانات المحطة مباشرة</div>
+      </div>
+
+      <div id="stationData" class="hero-grid">
+        <article id="temperatureCard" class="temperature-card">
+          <div id="conditionIcon" class="condition-icon">☀️</div>
+          <div id="temperature" class="temperature">--°</div>
+          <div class="temp-label">الآن</div>
+          <div class="day-range">
+            <span class="max"><b>العظمى</b><strong id="maxTemp">--°</strong></span>
+            <span class="min"><b>الصغرى</b><strong id="minTemp">--°</strong></span>
+            <span class="feels"><b>المحسوسة</b><strong id="feelsLike">--°</strong></span>
+          </div>
+        </article>
+
+        <div class="metrics-grid">
+          <article class="metric"><span>الرطوبة</span><strong id="humidity">--%</strong></article>
+          <article class="metric"><span>سرعة الرياح</span><strong id="wind">--</strong></article>
+          <article class="metric"><span>اتجاه الرياح</span><strong id="windDirection">--</strong></article>
+          <article class="metric"><span>هبات الرياح</span><strong id="windGust">--</strong></article>
+          <article class="metric rain-metric"><span>المطر</span><strong id="rain">--</strong></article>
+          <article class="metric"><span>الضغط الجوي</span><strong id="pressure">--</strong></article>
+          <article class="metric"><span>نقطة الندى</span><strong id="dewPoint">--</strong></article>
+          <article class="metric"><span>الإشعاع الشمسي</span><strong id="solarRadiation">--</strong></article>
+          <article class="metric"><span>مؤشر UV</span><strong id="uv">--</strong></article>
         </div>
+      </div>
+
+      <div id="stationOffline" class="station-offline" hidden>
+        <img id="offlineSymbol" class="offline-symbol" src="./header-symbol-light.webp" data-light-src="./header-symbol-light.webp" data-dark-src="./header-symbol-dark.webp" alt="راصد">
+        <div class="offline-copy">
+          <h2>بيانات المحطة غير متاحة مؤقتًا</h2>
+          <p id="offlineMessage">يبدو أن راصد لم يستقبل قراءة حديثة من المحطة في الوقت الحالي.</p>
+          <div id="offlineLastReading" class="offline-last-reading">آخر قراءة: غير متاحة</div>
+          <button id="retryWeather" class="retry-weather" type="button">إعادة المحاولة</button>
+        </div>
+      </div>
     </section>
 
-    <section>
-        <h2>التوقعات</h2>
-        <div id="forecast" class="forecast">
-            جاري تحميل التوقعات...
-        </div>
+    <section class="forecast-section">
+      <div class="section-title"><h2>التوقعات</h2><span id="forecastCount">--</span></div>
+      <div id="forecastContent" class="forecast-row"><div class="loading">جاري تحميل التوقعات...</div></div>
     </section>
 
-</main>
+    <section class="panel monthly-chart-panel">
+      <div class="section-title"><h2>الملخص الشهري</h2><span>حرارة · مطر</span></div>
+      <div class="monthly-legend" aria-hidden="true">
+        <span class="legend-max">العظمى</span><span class="legend-min">الصغرى</span><span class="legend-rain">المطر</span>
+      </div>
+      <div id="monthlyChart" class="monthly-chart"><div class="loading">جاري تحميل الملخص الشهري...</div></div>
+    </section>
 
-<script src="app.js"></script>
+    <div class="lower-grid">
+      <section class="panel stats-panel">
+        <div class="section-title"><h2>الإحصاءات</h2><select id="statsYear" class="year-select" aria-label="سنة الإحصاءات"></select></div>
+        <div id="statsSummary" class="stats-table-wrap">
+          <table class="stats-table">
+            <tbody>
+              <tr><th>أعلى درجة حرارة مسجلة</th><td id="statMaxTemp">--</td><td id="statMaxTempDate">--</td></tr>
+              <tr><th>أدنى درجة حرارة مسجلة</th><td id="statMinTemp">--</td><td id="statMinTempDate">--</td></tr>
+              <tr><th>أعلى هبات رياح مسجلة</th><td id="statWindGust">--</td><td id="statWindGustDate">--</td></tr>
+              <tr><th>أعلى رطوبة مسجلة</th><td id="statMaxHumidity">--</td><td id="statMaxHumidityDate">--</td></tr>
+              <tr><th>أدنى رطوبة مسجلة</th><td id="statMinHumidity">--</td><td id="statMinHumidityDate">--</td></tr>
+              <tr><th>أعلى كمية مطر مسجلة</th><td id="statRain">--</td><td id="statRainDate">--</td></tr>
+              <tr><th>عدد الأيام الممطرة</th><td id="statRainDays">--</td><td>حتى الآن</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="stats-note">الإحصاءات حسب ما سجلته المحطة المحلية.</div>
+      </section>
 
+      <section class="panel prayer-panel">
+        <div class="section-title"><h2>أوقات الصلاة</h2><span>أبيار الماشي</span></div>
+        <div id="prayerDate" class="prayer-date">--</div>
+        <div id="prayerGrid" class="prayer-grid">
+          <div class="loading">جاري تحميل أوقات الصلاة...</div>
+        </div>
+        <div id="moonInfo" class="moon-info">
+          <span class="moon-icon" id="moonIcon">◐</span>
+          <span class="moon-copy"><b id="moonPhase">حالة القمر</b><small id="moonIllumination">--</small></span>
+          <div class="moon-times" aria-label="أوقات ظهور القمر وغروبه">
+            <span><b>الظهور</b><strong id="moonRise">--:--</strong></span>
+            <span><b>الغروب</b><strong id="moonSet">--:--</strong></span>
+          </div>
+        </div>
+        <div class="prayer-note">المصدر: أم القرى عبر AlAdhan · مرتبطة بموقع أبيار الماشي.</div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <span>راصد</span>
+    <span>أبيار الماشي · المدينة</span>
+    <span>Weather Underground</span>
+  </footer>
+
+  <script src="./config.js?v=static-0.1.0"></script>
+  <script src="./app.js?v=static-0.1.0"></script>
 </body>
 </html>
